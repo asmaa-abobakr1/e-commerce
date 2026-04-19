@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="details"></div>
+
+  <script>
+    let id = new URLSearchParams(window.location.search).get("id")
+
+    if (!id) {
+      document.getElementById("details").innerHTML = "<h2>No product found</h2>"
+    } else {
+      fetch(`https://dummyjson.com/products/${id}`)
+        .then(res => res.json())
+        .then(product => {
+          document.getElementById("details").innerHTML = `
+            <div class="card">
+              <img src="${product.thumbnail}" width="200">
+              <h2>${product.title}</h2>
+              <p>${product.description}</p>
+              <h3>${product.price}$</h3>
+            </div>
+          `
+        })
+    }
+  </script>
+
+</body>
+</html>

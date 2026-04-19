@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>Your Cart 🛒</h1>
+  </header>
+
+  <div id="cart-items" class="products-grid"></div>
+
+  <div class="total">
+    <h2>Total: <span id="total-price">0</span>$</h2>
+  </div>
+
+  <script>
+    let cart = JSON.parse(localStorage.getItem("cart")) || []
+
+    let container = document.getElementById("cart-items")
+    let totalPriceEl = document.getElementById("total-price")
+
+    function renderCart() {
+      container.innerHTML = ""
+
+      let total = 0
+
+      cart.forEach((item, index) => {
+        total += item.price
+
+        container.innerHTML += `
+          <div class="card">
+            <img src="${item.thumbnail}" width="100">
+            <h3>${item.title.slice(0, 20)}...</h3>
+            <p>${item.price}$</p>
+
+            <button onclick="removeItem(${index})">Remove</button>
+          </div>
+        `
+      })
+
+      totalPriceEl.innerText = total.toFixed(2)
+    }
+
+    function removeItem(index) {
+      cart.splice(index, 1)
+      localStorage.setItem("cart", JSON.stringify(cart))
+      renderCart()
+    }
+
+    renderCart()
+  </script>
+
+</body>
+</html>
